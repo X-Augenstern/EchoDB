@@ -1,9 +1,6 @@
 package xzzzz.xz.echodb.backend.tm;
 
 
-/**
- * TM通过维护XID文件来维护事务的状态，并提供接口供其他模块来查询某个事务的状态
- */
 public interface TransactionManager {
     /**
      * 开启一个新事务

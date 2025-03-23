@@ -11,6 +11,10 @@ import java.nio.channels.FileChannel;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+
+/**
+ * TM通过维护XID文件来维护事务的状态，并提供接口供其他模块来查询某个事务的状态
+ */
 public class TransactionManagerImpl implements TransactionManager {
 
     static final int LEN_XID_HEADER_LENGTH = 8;  // XID文件头长度，记录了这个 XID 文件管理的事务的个数

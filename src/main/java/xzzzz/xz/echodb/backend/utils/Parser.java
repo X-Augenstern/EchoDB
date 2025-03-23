@@ -3,6 +3,10 @@ package xzzzz.xz.echodb.backend.utils;
 import java.nio.ByteBuffer;
 
 public class Parser {
+    /*
+      字节数组 -> ByteBuffer -> 数据类型：根据数据类型对应的字节数从字节数组中读取并创建字节缓冲区对象 ByteBuffer，从对象中获取对应的数据类型
+      数据类型 -> ByteBuffer -> 字节数组：根据数据类型对应的字节数为字节缓冲区对象 ByteBuffer 分配相应空间，放入数据，.array()得到相应的字节数组
+     */
 
     /**
      * 将一个字节数组（byte[] buf）中的前8个字节解析为一个 long 类型的整数值
@@ -21,6 +25,16 @@ public class Parser {
         return buffer.getLong();  // 从 ByteBuffer 中读取8个字节，并按照默认的大端序（big-endian）将它们组合成一个 long 类型的数值
     }
 
+    public static short parseShort(byte[] buf) {
+        ByteBuffer buffer = ByteBuffer.wrap(buf, 0, 2);
+        return buffer.getShort();
+    }
+
+    public static int parseInt(byte[] buf) {
+        ByteBuffer buffer = ByteBuffer.wrap(buf, 0, 4);
+        return buffer.getInt();
+    }
+
     /**
      * long val = 0x1122334455667788L;
      * byte[] bytes = long2Byte(val);
@@ -28,5 +42,14 @@ public class Parser {
      */
     public static byte[] long2Byte(long val) {
         return ByteBuffer.allocate(Long.SIZE / Byte.SIZE).putLong(val).array();  // 把val写入这个ByteBuffer中（按照大端序，高位在前），返回内部的byte[]数组
+    }
+
+    public static byte[] short2Byte(short val) {
+        return ByteBuffer.allocate(Short.SIZE / Byte.SIZE).putShort(val).array();
+    }
+
+
+    public static byte[] int2Byte(int val) {
+        return ByteBuffer.allocate(Integer.SIZE / Byte.SIZE).putInt(val).array();
     }
 }
