@@ -14,7 +14,7 @@ public interface DataManager {
     DataItem read(long uid) throws Exception;
 
     /**
-     * 插入
+     * 插入，并返回新插入的数据项的uid
      */
     long insert(long xid, byte[] data) throws Exception;
 

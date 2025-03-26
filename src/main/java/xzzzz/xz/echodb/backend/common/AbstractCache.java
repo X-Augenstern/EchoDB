@@ -70,7 +70,10 @@ public abstract class AbstractCache<T> {
 
     /**
      * Page - key: pgno
+     * <p>
      * DataItem - key: uid
+     * <p>
+     * Entry - key: uid
      */
     protected T get(long key) throws Exception {
         while (true) {

@@ -19,4 +19,9 @@ public class Error {
     public static Exception PageIsNullException = new RuntimeException("Page is null!");
     public static Exception DataTooLargeException = new RuntimeException("Data too large!");
     public static Exception DatabaseBusyException = new RuntimeException("Database is busy!");
+
+    // VM
+    public static Exception DeadlockException = new RuntimeException("Deadlock!");
+    public static Exception NullEntryException = new RuntimeException("Null entry!");
+    public static Exception ConcurrentUpdateException = new RuntimeException("Concurrent update issue!");
 }

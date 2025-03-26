@@ -118,15 +118,10 @@ public class DataManagerImpl extends AbstractCache<DataItem> implements DataMana
 
     /**
      * 首先需要写入插入日志，接着才可以通过 PageX 插入数据，并返回插入位置的偏移。最后需要将页面信息重新插入 pageIndex
-     *
-     * @param xid
-     * @param data
-     * @return
-     * @throws Exception
      */
     @Override
     public long insert(long xid, byte[] data) throws Exception {
-        byte[] raw = DataItem.wrapDataItemRaw(data);  // 将输入的数据包装成DataItem的原始格式
+        byte[] raw = DataItem.wrapDataItemRaw(data);  // 将输入的Entry包装成DataItem的原始格式
         if (raw.length > PageX.MAX_FREE_SPACE)
             throw Error.DataTooLargeException;
 
@@ -171,9 +166,12 @@ public class DataManagerImpl extends AbstractCache<DataItem> implements DataMana
         return DataItem.parseDataItem(pg, offset, this);
     }
 
+    /**
+     * 进而释放页面缓存
+     */
     @Override
     protected void releaseForCache(DataItem di) {
-        di.release();
+        di.getPage().release();
     }
 
     /**

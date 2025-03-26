@@ -40,6 +40,7 @@ public interface DataItem {
 
     /**
      * 在使用完 DataItem 后，也应当及时调用 release() 方法，释放掉 DataItem 的缓存（由 DM 缓存 DataItem）
+     * 进而会释放包含的页面对象的缓存
      */
     void release();
 
