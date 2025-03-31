@@ -24,4 +24,17 @@ public class Error {
     public static Exception DeadlockException = new RuntimeException("Deadlock!");
     public static Exception NullEntryException = new RuntimeException("Null entry!");
     public static Exception ConcurrentUpdateException = new RuntimeException("Concurrent update issue!");
+
+    // parser
+    public static Exception InvalidCommandException = new RuntimeException("Invalid command!");
+    public static Exception TableNoIndexException = new RuntimeException("Table has no index!");
+
+    // TBM
+    public static Exception InvalidFieldException = new RuntimeException("Invalid field type!");
+    public static Exception FieldNotIndexedException = new RuntimeException("Field not indexed!");
+    public static Exception FieldNotFoundException = new RuntimeException("Field not found!");
+    public static Exception InvalidLogOpException = new RuntimeException("Invalid logic operation!");
+    public static Exception InvalidValuesException = new RuntimeException("Invalid values!");
+    public static Exception DuplicatedTableException = new RuntimeException("Duplicated table!");
+    public static Exception TableNotFoundException = new RuntimeException("Table not found!");
 }

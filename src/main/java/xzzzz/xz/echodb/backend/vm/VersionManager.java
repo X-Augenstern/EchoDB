@@ -16,12 +16,12 @@ public interface VersionManager {
     long insert(long xid, byte[] data) throws Exception;
 
     /**
-     * 删除一个数据项
+     * 设置 Xmax 删除一个数据项
      */
     boolean delete(long xid, long uid) throws Exception;
 
     /**
-     * 开启一个事务，并初始化事务的结构，将其存放在 activeTransaction 中，用于检查和快照使用
+     * 开启一个事务，并初始化事务的结构，将其存放在 activeTransaction 中，用于检查和快照使用，返回新事务的xid
      */
     long begin(int level);
 
