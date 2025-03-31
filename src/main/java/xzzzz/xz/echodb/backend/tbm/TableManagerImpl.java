@@ -151,7 +151,7 @@ public class TableManagerImpl implements TableManager {
                 xidTableCache.put(xid, new ArrayList<>());
             }
             xidTableCache.get(xid).add(tb);  // 将新创建的表添加到当前事务的表列表中
-            return ("create" + create.tableName).getBytes();
+            return ("create " + create.tableName).getBytes();
         } finally {
             lock.unlock();
         }

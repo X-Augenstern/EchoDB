@@ -193,19 +193,19 @@ public class TransactionManagerImpl implements TransactionManager {
 
     @Override
     public boolean isActive(long xid) {
-        if (xid == SUPER_XID) return false;
+        if (xid == SUPER_XID) return false;  // 超级事务默认不算 active，因为它不是一个正在运行的用户事务
         return checkXID(xid, FIELD_TRAN_ACTIVE);
     }
 
     @Override
     public boolean isCommitted(long xid) {
-        if (xid == SUPER_XID) return false;
+        if (xid == SUPER_XID) return true;  // 超级事务默认是“已提交”状态，因为它一般用于初始化、表结构、系统元信息写入等，默认认为这些都“已生效”
         return checkXID(xid, FIELD_TRAN_COMMITTED);
     }
 
     @Override
     public boolean isAborted(long xid) {
-        if (xid == SUPER_XID) return false;
+        if (xid == SUPER_XID) return false;  // 超级事务不会被回滚，所以默认不是 aborted
         return checkXID(xid, FIELD_TRAN_ABORTED);
     }
 

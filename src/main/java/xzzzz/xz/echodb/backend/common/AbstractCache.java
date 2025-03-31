@@ -56,7 +56,7 @@ public abstract class AbstractCache<T> {
     /**
      * 缓存中元素个数
      */
-    private int count;
+    private int count = 0;
 
     private Lock lock;
 
@@ -108,7 +108,7 @@ public abstract class AbstractCache<T> {
         }
 
         // 尝试获取资源
-        T obj = null;
+        T obj;
         try {
             obj = getForCache(key);
         } catch (Exception e) {  // 获取资源失败
@@ -166,7 +166,7 @@ public abstract class AbstractCache<T> {
         lock.lock();
         try {
             Set<Long> keys = cache.keySet();
-            for (Long key : keys) {
+            for (long key : keys) {
                 T obj = cache.get(key);
                 releaseForCache(obj);
                 references.remove(key);

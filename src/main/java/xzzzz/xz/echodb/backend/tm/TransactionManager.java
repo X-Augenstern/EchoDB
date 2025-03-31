@@ -6,6 +6,7 @@ import xzzzz.xz.echodb.backend.utils.FileUtil;
 import xzzzz.xz.echodb.backend.utils.Panic;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
@@ -57,7 +58,7 @@ public interface TransactionManager {
         try {
             fc.position(0);
             fc.write(buf);
-        } catch (Exception e) {
+        } catch (IOException e) {
             Panic.panic(e);
         }
         return new TransactionManagerImpl(fi.getRaf(), fc);

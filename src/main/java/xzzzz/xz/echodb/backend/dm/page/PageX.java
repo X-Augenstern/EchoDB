@@ -87,7 +87,7 @@ public class PageX {
         pg.setDirty(true);
         short offset = getFSO(pg.getData());
         System.arraycopy(raw, 0, pg.getData(), offset, raw.length);
-        setFSO(raw, (short) (offset + raw.length));
+        setFSO(pg.getData(), (short) (offset + raw.length));
         return offset;
     }
 

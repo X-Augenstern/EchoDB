@@ -66,7 +66,7 @@ public class PageCacheImpl extends AbstractCache<Page> implements PageCache {
         try {
             fc.position(offset);  // 从文件通道位置读取数据至buffer
             fc.read(buf);
-        } catch (Exception e) {
+        } catch (IOException e) {
             Panic.panic(e);
         }
         fileLock.unlock();

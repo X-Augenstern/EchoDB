@@ -284,7 +284,7 @@ public class Recover {
             maxPage = 1;
 
         pc.truncateByBgno(maxPage);
-        System.out.println("Truncate to" + maxPage + " pages.");
+        System.out.println("Truncate to " + maxPage + " pages.");
 
         redoTransactions(tm, lg, pc);
         System.out.println("Redo Transactions Over");
