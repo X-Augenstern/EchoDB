@@ -1,13 +1,10 @@
 package xzzzz.xz.echodb.backend.dm.pageCache;
 
 import xzzzz.xz.echodb.backend.dm.page.Page;
-import xzzzz.xz.echodb.backend.utils.Panic;
-import xzzzz.xz.echodb.commen.Error;
+import xzzzz.xz.echodb.backend.utils.FileInfo;
+import xzzzz.xz.echodb.backend.utils.FileUtil;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.RandomAccessFile;
-import java.nio.channels.FileChannel;
 
 /**
  * 定义了页面缓存的接口，包括新建页面、获取页面、释放页面缓存、关闭缓存、根据最大页号截断缓存、获取所有页面数量以及刷新页面等方法
@@ -16,6 +13,7 @@ public interface PageCache {
 
     /**
      * 新建页面
+     *
      * @return 当前页号
      */
     int newPage(byte[] initData);
@@ -55,8 +53,6 @@ public interface PageCache {
      */
     int PAGE_SIZE = 1 << 13;
 
-    enum Mode {CREATE, OPEN}
-
     /*
      接口中的 static 方法属于接口本身，不会被实现类继承或自动“默认使用”
 
@@ -75,40 +71,19 @@ public interface PageCache {
      * 静态工厂方法模式返回实现类
      */
     static PageCacheImpl create(String path, long memory) {
-        return access(path, memory, Mode.CREATE);
+        return access(path, memory, FileUtil.Mode.CREATE);
     }
 
     /**
      * 用于后续启动时打开已存在的数据库文件
      */
     static PageCacheImpl open(String path, long memory) {
-        return access(path, memory, Mode.OPEN);
+        return access(path, memory, FileUtil.Mode.OPEN);
     }
 
-    private static PageCacheImpl access(String path, long memory, Mode mode) {
+    private static PageCacheImpl access(String path, long memory, FileUtil.Mode mode) {
         File f = new File(path + PageCacheImpl.DB_SUFFIX);
-        try {
-            if (mode == Mode.CREATE) {
-                if (!f.createNewFile())
-                    Panic.panic(Error.FileExistsException);
-            } else {
-                if (!f.exists())
-                    Panic.panic(Error.FileNotExistsException);
-            }
-        } catch (Exception e) {
-            Panic.panic(e);
-        }
-        if (!f.canRead() || !f.canWrite())
-            Panic.panic(Error.FileCannotRWException);
-
-        FileChannel fc = null;
-        RandomAccessFile raf = null;
-        try {
-            raf = new RandomAccessFile(f, "rw");
-            fc = raf.getChannel();
-        } catch (FileNotFoundException e) {
-            Panic.panic(e);
-        }
-        return new PageCacheImpl((int) memory / PAGE_SIZE, raf, fc);
+        FileInfo fi = FileUtil.checkFileAndBuildInfo(f, mode);
+        return new PageCacheImpl((int) memory / PAGE_SIZE, fi.getRaf(), fi.getFc());
     }
 }

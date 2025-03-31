@@ -1,5 +1,6 @@
 package xzzzz.xz.echodb.backend.tbm;
 
+import xzzzz.xz.echodb.backend.utils.FileUtil;
 import xzzzz.xz.echodb.backend.utils.Panic;
 import xzzzz.xz.echodb.commen.Error;
 
@@ -60,14 +61,7 @@ public class Booter {
     public static Booter create(String path) {
         removeBadTmp(path);
         File f = new File(path + BOOTER_SUFFIX);
-        try {
-            if (!f.createNewFile())
-                Panic.panic(Error.FileExistsException);
-        } catch (Exception e) {
-            Panic.panic(e);
-        }
-        if (!f.canRead() || !f.canWrite())
-            Panic.panic(Error.FileCannotRWException);
+        FileUtil.checkFile(f, FileUtil.Mode.CREATE);
         return new Booter(path, f);
     }
 
@@ -77,15 +71,7 @@ public class Booter {
     public static Booter open(String path) {
         removeBadTmp(path);
         File f = new File(path + BOOTER_SUFFIX);
-        try {
-            if (!f.exists()) {
-                Panic.panic(Error.FileNotExistsException);
-            }
-        } catch (Exception e) {
-            Panic.panic(e);
-        }
-        if (!f.canRead() || !f.canWrite())
-            Panic.panic(Error.FileCannotRWException);
+        FileUtil.checkFile(f, FileUtil.Mode.OPEN);
         return new Booter(path, f);
     }
 

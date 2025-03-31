@@ -1,6 +1,14 @@
 package xzzzz.xz.echodb.backend.tm;
 
 
+import xzzzz.xz.echodb.backend.utils.FileInfo;
+import xzzzz.xz.echodb.backend.utils.FileUtil;
+import xzzzz.xz.echodb.backend.utils.Panic;
+
+import java.io.File;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+
 public interface TransactionManager {
     /**
      * 开启一个新事务
@@ -36,4 +44,32 @@ public interface TransactionManager {
      * 关闭TM
      */
     void close();
+
+    /**
+     * 创建VM并写空XID文件头
+     */
+    static TransactionManagerImpl create(String path) {
+        FileInfo fi = access(path, FileUtil.Mode.CREATE);
+        FileChannel fc = fi.getFc();
+
+        // 写空XID文件头
+        ByteBuffer buf = ByteBuffer.wrap(new byte[TransactionManagerImpl.LEN_XID_HEADER_LENGTH]);
+        try {
+            fc.position(0);
+            fc.write(buf);
+        } catch (Exception e) {
+            Panic.panic(e);
+        }
+        return new TransactionManagerImpl(fi.getRaf(), fc);
+    }
+
+    static TransactionManagerImpl open(String path) {
+        FileInfo fi = access(path, FileUtil.Mode.OPEN);
+        return new TransactionManagerImpl(fi.getRaf(), fi.getFc());
+    }
+
+    private static FileInfo access(String path, FileUtil.Mode mode) {
+        File f = new File(path + TransactionManagerImpl.XID_SUFFIX);
+        return FileUtil.checkFileAndBuildInfo(f, mode);
+    }
 }

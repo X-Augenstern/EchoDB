@@ -37,4 +37,9 @@ public class Error {
     public static Exception InvalidValuesException = new RuntimeException("Invalid values!");
     public static Exception DuplicatedTableException = new RuntimeException("Duplicated table!");
     public static Exception TableNotFoundException = new RuntimeException("Table not found!");
+
+    // transport
+    public static Exception InvalidPkgDataException = new RuntimeException("Invalid package data!");
+    public static Exception NestedTransactionException = new RuntimeException("Nested transaction not support!");
+    public static Exception NotInTransactionException = new RuntimeException("Not in transaction!");
 }

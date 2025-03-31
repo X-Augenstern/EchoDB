@@ -14,6 +14,26 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * TM通过维护XID文件来维护事务的状态，并提供接口供其他模块来查询某个事务的状态
+ * <p>
+ * 1. XID 的定义和规则：
+ * <p>
+ * - 每个事务都有一个唯一的事务标识符 XID，从 1 开始递增，并且 XID 0 被特殊定义为超级事务（Super Transaction）。
+ * <p>
+ * - XID 0 用于表示在没有申请事务的情况下进行的操作，其状态永远是 committed。
+ * <p>
+ * 2. 事务的状态：
+ * <p>
+ * - 每个事务可以处于三种状态之一：active（正在进行，尚未结束）、committed（已提交）和aborted（已撤销或回滚）。
+ * <p>
+ * 3. XID 文件的结构和管理：
+ * <p>
+ * - TransactionManager 负责维护一个 XID 格式的文件，用于记录各个事务的状态。
+ * <p>
+ * - XID 文件中为每个事务分配了一个字节的空间，用来保存其状态。
+ * <p>
+ * - XID 文件的头部保存了一个 8 字节的数字，记录了这个 XID 文件管理的事务的个数。
+ * <p>
+ * - 因此，事务 XID 在文件中的状态存储在 (XID-1)+8 字节的位置处，其中 XID-1 是因为 XID 0（超级事务）的状态不需要记录。
  */
 public class TransactionManagerImpl implements TransactionManager {
 
